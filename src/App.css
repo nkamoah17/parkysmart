@@ -1,0 +1,48 @@
+/* src/App.css */
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 2em;
+}
+
+.Upload, .Display, .ApiKey {
+  margin: 20px auto;
+  width: 80%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+}
+
+button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+label {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}

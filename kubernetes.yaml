@@ -1,0 +1,72 @@
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parking-lot-app
+  labels:
+    app: parking-lot-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: parking-lot-app
+  template:
+    metadata:
+      labels:
+        app: parking-lot-app
+    spec:
+      containers:
+      - name: parking-lot-app
+        image: parking-lot-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: host
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: dbname
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: password
+        - name: S3_BUCKET
+          valueFrom:
+            secretKeyRef:
+              name: s3-secrets
+              key: bucket
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: redis-secrets
+              key: host
+        - name: REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: redis-secrets
+              key: port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: parking-lot-app
+spec:
+  selector:
+    app: parking-lot-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
+```
