@@ -1,4 +1,3 @@
-```python
 import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -52,4 +51,3 @@ if __name__ == "__main__":
 
     # Save the trained model
     save_model()
-```

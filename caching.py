@@ -22,4 +22,3 @@ def delete(key):
     Delete a value from the cache.
     """
     cache.delete(key)
-```

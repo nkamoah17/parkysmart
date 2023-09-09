@@ -1,4 +1,3 @@
-
 import os
 import binascii
 
@@ -15,4 +14,3 @@ def validate_key(api_key):
     this function just checks that the key is not empty.
     """
     return bool(api_key)
-```

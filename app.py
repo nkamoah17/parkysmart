@@ -10,8 +10,7 @@ CORS(app)
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    file = request.files['file']
-    if file:
+    if (file := request.files.get('file')):
         file_id = data_storage.save_file(file)
         occupancy = inference.predict(file)
         caching.save(file_id, occupancy)
@@ -33,4 +32,3 @@ def get_api_key():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-```

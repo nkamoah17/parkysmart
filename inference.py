@@ -1,4 +1,3 @@
-```python
 import torch
 from torchvision import transforms
 from PIL import Image
@@ -31,7 +30,6 @@ def predict(file):
         out = model(img_u)
     
     # Convert the output probabilities to occupancy percentage
-    occupancy = torch.nn.functional.softmax(out, dim=1).numpy()[0][1] * 100
     
-    return occupancy
-```
+    return torch.nn.functional.softmax(out, dim=1).numpy()[0][1] * 100
+    

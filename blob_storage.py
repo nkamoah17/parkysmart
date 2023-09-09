@@ -34,4 +34,3 @@ def get_blob_storage():
     Returns the BlobStorage object
     """
     return blob_storage
-```

@@ -1,4 +1,3 @@
-```python
 import psycopg2
 from psycopg2 import pool
 from config import get_config
@@ -67,4 +66,3 @@ def get_db():
     Returns the database object
     """
     return db
-```
