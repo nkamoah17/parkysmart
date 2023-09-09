@@ -1,4 +1,3 @@
-```python
 import os
 import boto3
 from config import get_config

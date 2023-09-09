@@ -1,4 +1,4 @@
-```python
+
 import redis
 import os
 

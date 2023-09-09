@@ -1,5 +1,3 @@
-```python
-import os
 import uuid
 from werkzeug.utils import secure_filename
 from psycopg2 import pool

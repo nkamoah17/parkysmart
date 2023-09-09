@@ -1,4 +1,4 @@
-```python
+
 import redis
 from config import get_config
 
