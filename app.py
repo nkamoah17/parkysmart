@@ -1,34 +1,54 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import api
-import data_storage
-import caching
-import inference
+try:
+    from flask import Flask, request, jsonify
+    from flask_cors import CORS
+    import api
+    import data_storage
+    import caching
+    import inference
+except ImportError as e:
+    print(f"Error importing modules: {e}")
+    exit(1)
 
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    if (file := request.files.get('file')):
-        file_id = data_storage.save_file(file)
-        occupancy = inference.predict(file)
-        caching.save(file_id, occupancy)
-        return jsonify({'file_id': file_id, 'occupancy': occupancy}), 200
-    else:
-        return jsonify({'error': 'No file provided'}), 400
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part in the request'}), 400
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+        if file:
+            file_id = data_storage.save_file(file)
+            occupancy = inference.predict(file)
+            caching.save(file_id, occupancy)
+            return jsonify({'file_id': file_id, 'occupancy': occupancy}), 200
+    except Exception as e:
+        return jsonify({'error': f"An error occurred: {str(e)}"}), 500
 
 @app.route('/occupancy/<id>', methods=['GET'])
 def get_occupancy(id):
-    occupancy = caching.get(id)
-    if occupancy is None:
-        occupancy = inference.predict(data_storage.get_file(id))
-        caching.save(id, occupancy)
-    return jsonify({'occupancy': occupancy}), 200
+    try:
+        occupancy = caching.get(id)
+        if occupancy is None:
+            occupancy = inference.predict(data_storage.get_file(id))
+            caching.save(id, occupancy)
+        return jsonify({'occupancy': occupancy}), 200
+    except Exception as e:
+        return jsonify({'error': f"An error occurred: {str(e)}"}), 500
 
 @app.route('/api-key', methods=['GET'])
 def get_api_key():
-    return jsonify({'api_key': api.generate_key()}), 200
+    try:
+        return jsonify({'api_key': api.generate_key()}), 200
+    except Exception as e:
+        return jsonify({'error': f"An error occurred: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    try:
+        app.run(host='0.0.0.0', port=5000, debug=True)
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        exit(1)

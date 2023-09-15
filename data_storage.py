@@ -1,6 +1,6 @@
 import uuid
 from werkzeug.utils import secure_filename
-from psycopg2 import pool
+from psycopg2 import pool, extras
 import boto3
 
 # Database connection pool
@@ -43,14 +43,15 @@ def save_metadata(file_id, occupancy):
     """
     Save metadata to the database.
     """
+    if db_pool is None:
+        raise Exception("Database connection pool is not initialized. Call init_app(app) first.")
     conn = db_pool.getconn()
     try:
-        with conn.cursor() as cur:
+        with conn, conn.cursor() as cur:
             cur.execute(
                 'INSERT INTO occupancy (file_id, occupancy) VALUES (%s, %s)',
                 (file_id, occupancy)
             )
-        conn.commit()
     finally:
         db_pool.putconn(conn)
 
@@ -58,9 +59,11 @@ def get_metadata(file_id):
     """
     Retrieve metadata from the database.
     """
+    if db_pool is None:
+        raise Exception("Database connection pool is not initialized. Call init_app(app) first.")
     conn = db_pool.getconn()
     try:
-        with conn.cursor() as cur:
+        with conn, conn.cursor() as cur:
             cur.execute(
                 'SELECT occupancy FROM occupancy WHERE file_id = %s',
                 (file_id,)
@@ -69,4 +72,4 @@ def get_metadata(file_id):
             return result[0] if result else None
     finally:
         db_pool.putconn(conn)
-```
+

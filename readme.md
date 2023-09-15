@@ -5,7 +5,7 @@ Overview
 
 The system is composed of a React frontend and a Flask backend. The frontend allows users to upload an image of a parking lot, and displays the predicted occupancy. The backend handles the image upload, runs the prediction model, and returns the results.
 
-The system also includes a caching layer using Redis, and a blob storage layer using S3 for storing the uploaded images.
+The system also includes a caching layer using Redis, and a blob storage layer using S3 for storing the uploaded images. It uses PostgreSQL for database operations.
 Getting Started
 
 To get started with the project, clone the repository and install the required dependencies.
@@ -13,6 +13,15 @@ To get started with the project, clone the repository and install the required d
 For the frontend, you will need Node.js and npm. Navigate to the src directory and run npm install to install the dependencies.
 
 For the backend, you will need Python and pip. Navigate to the root directory and run pip install -r requirements.txt to install the dependencies.
+
+You will also need to set up the following environment variables for the backend:
+
+DB_NAME, DB_USER, DB_PASSWORD for the PostgreSQL database
+S3_BUCKET, S3_ACCESS_KEY, S3_SECRET_KEY for the S3 storage
+REDIS_HOST, REDIS_PORT for the Redis caching layer
+SECRET_KEY for the Flask application
+
+These can be set in the config.py file or as environment variables.
 Running the Application
 
 To run the frontend, navigate to the src directory and run npm start.

@@ -7,3 +7,10 @@ torch
 torchvision
 werkzeug
 binascii
+uuid
+os
+configparser
+numpy
+Pillow
+requests
+uuid

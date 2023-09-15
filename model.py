@@ -1,22 +1,17 @@
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
-
+from torchvision import datasets
 from config import get_config
+from transform import get_transform
 
 # Get the configuration
 config = get_config()
 
-# Define the transformation
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+# Get the transformation
+transform = get_transform()
 
 # Load the training data
 train_data = datasets.ImageFolder(root='train_data', transform=transform)
@@ -72,3 +67,4 @@ for epoch in range(1, 11):
 
 # Save the trained model
 save_model()
+

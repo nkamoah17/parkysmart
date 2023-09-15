@@ -1,16 +1,25 @@
-import os
-import binascii
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import BadSignature, SignatureExpired
+
+SECRET_KEY = "YOUR_SECRET_KEY"  # Replace with your secret key
 
 def generate_key():
     """
-    Generate a random API key
+    Generate a secure API key using itsdangerous library
     """
-    return binascii.hexlify(os.urandom(24)).decode()
+    s = Serializer(SECRET_KEY, expires_in=3600)
+    return s.dumps({'api_key': 'secure_key'}).decode()
 
 def validate_key(api_key):
     """
-    Validate an API key. In a real-world application, this function would check
-    the provided API key against a database or other data store. For simplicity,
-    this function just checks that the key is not empty.
+    Validate an API key using itsdangerous library. This function checks
+    the provided API key against the generated secure key.
     """
-    return bool(api_key)
+    s = Serializer(SECRET_KEY)
+    try:
+        data = s.loads(api_key)
+    except SignatureExpired:
+        return False  # valid token, but expired
+    except BadSignature:
+        return False  # invalid token
+    return True
