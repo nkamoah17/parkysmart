@@ -15,7 +15,8 @@ def init_app(app):
     """
     global db_pool
     db_pool = pool.SimpleConnectionPool(
-        1, 20,
+        minconn=1, 
+        maxconn=20,
         host=app.config['DB_HOST'],
         database=app.config['DB_NAME'],
         user=app.config['DB_USER'],

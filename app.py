@@ -33,7 +33,10 @@ def get_occupancy(id):
     try:
         occupancy = caching.get(id)
         if occupancy is None:
-            occupancy = inference.predict(data_storage.get_file(id))
+            metadata = data_storage.get_metadata(id)
+            if metadata is None:
+                return jsonify({'error': 'No such file'}), 404
+            occupancy = inference.predict(metadata['file'])
             caching.save(id, occupancy)
         return jsonify({'occupancy': occupancy}), 200
     except Exception as e:

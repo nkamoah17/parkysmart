@@ -18,8 +18,10 @@ def validate_key(api_key):
     s = Serializer(SECRET_KEY)
     try:
         data = s.loads(api_key)
+        if 'api_key' in data and data['api_key'] == 'secure_key':
+            return True
     except SignatureExpired:
         return False  # valid token, but expired
     except BadSignature:
         return False  # invalid token
-    return True
+    return False
