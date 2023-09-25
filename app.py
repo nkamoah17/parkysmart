@@ -12,6 +12,10 @@ except ImportError as e:
 app = Flask(__name__)
 CORS(app)
 
+# Initialize the database connection pool and the S3 client
+data_storage.init_app(app)
+blob_storage.init_app(app)
+
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
@@ -55,3 +59,4 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"An error occurred: {str(e)}")
         exit(1)
+

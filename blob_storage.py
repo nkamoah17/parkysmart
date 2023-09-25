@@ -6,13 +6,21 @@ class BlobStorage:
     """
     BlobStorage class. This class will handle all the blob storage operations.
     """
-    def __init__(self):
+    def __init__(self, app=None):
         self.config = get_config()
         self.s3 = boto3.client(
             's3',
             aws_access_key_id=self.config.S3_ACCESS_KEY,
             aws_secret_access_key=self.config.S3_SECRET_KEY
         )
+        if app is not None:
+            self.init_app(app)
+
+    def init_app(self, app):
+        """
+        Initialize the BlobStorage with the given Flask app.
+        """
+        app.config['BLOB_STORAGE'] = self
 
     def upload_file(self, file, file_id):
         """
@@ -34,3 +42,4 @@ def get_blob_storage():
     Returns the BlobStorage object
     """
     return blob_storage
+

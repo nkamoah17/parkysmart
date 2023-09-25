@@ -22,6 +22,9 @@ def init_app(app):
         user=app.config['DB_USER'],
         password=app.config['DB_PASSWORD']
     )
+    # Initialize the S3 client
+    global s3
+    s3 = boto3.client('s3')
 
 def save_file(file):
     """
@@ -73,4 +76,5 @@ def get_metadata(file_id):
             return result[0] if result else None
     finally:
         db_pool.putconn(conn)
+
 

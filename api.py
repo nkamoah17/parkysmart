@@ -1,5 +1,6 @@
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
+from flask import request, abort
 
 SECRET_KEY = "YOUR_SECRET_KEY"  # Replace with your secret key
 
@@ -25,3 +26,15 @@ def validate_key(api_key):
     except BadSignature:
         return False  # invalid token
     return False
+
+def api_key_required(f):
+    """
+    A decorator to ensure that the API key is provided in the request
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        api_key = request.headers.get('API-Key')
+        if not api_key or not validate_key(api_key):
+            abort(401)
+        return f(*args, **kwargs)
+    return decorated_function
