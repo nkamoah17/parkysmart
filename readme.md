@@ -27,7 +27,7 @@ These can be set in the `.env` file or as environment variables.
 
 ## Running the Application
 
-To run the frontend, navigate to the src directory and run [npm start]().
+To run the frontend, navigate to the src directory and run [npm start]
 
 To run the backend, navigate to the root directory and run `python app.py`.
 
